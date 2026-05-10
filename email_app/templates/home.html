@@ -1,0 +1,217 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- ================= HERO ================= -->
+<section class="mb-5 position-relative">
+
+  <div class="card-glass text-center position-relative overflow-hidden">
+
+    <!-- top glow accent -->
+    <div style="
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple));
+    "></div>
+
+    <span class="badge bg-info text-dark mb-4 px-3 py-2">
+      POWERED BY GMAIL SMTP
+    </span>
+
+    <h1 style="
+      font-size:72px;
+      font-weight:900;
+      line-height:1.1;
+      background:linear-gradient(90deg,#ffffff,#2ea8ff,#7b5cff);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+    ">
+      Next-Gen Email<br>Automation System
+    </h1>
+
+    <p style="
+      max-width:820px;
+      margin:40px auto;
+      color:var(--muted);
+      font-size:20px;
+      line-height:1.8;
+    ">
+      Secure Gmail authentication, instant delivery,
+      intelligent contact management and full history tracking —
+      built inside a modern premium neon interface.
+    </p>
+
+    {% if not request.user.is_authenticated %}
+      <a href="{% url 'register' %}" class="btn btn-neon me-3">Start Free</a>
+      <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
+    {% else %}
+      <a href="{% url 'dashboard' %}" class="btn btn-neon">Open Dashboard</a>
+    {% endif %}
+
+  </div>
+</section>
+
+
+<!-- ================= QUICK STATS ================= -->
+<section class="row g-4 mb-5 text-center">
+
+  <div class="col-md-3">
+    <div class="card-glass stat-card stat-blue">
+      <div class="ribbon-blue"></div>
+      <h3 class="fw-bold">99.9%</h3>
+      <p style="color:var(--muted)">Delivery Success</p>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card-glass stat-card stat-cyan">
+      <div class="ribbon-cyan"></div>
+      <h3 class="fw-bold">&lt; 1s</h3>
+      <p style="color:var(--muted)">Avg Send Time</p>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card-glass stat-card stat-purple">
+      <div class="ribbon-purple"></div>
+      <h3 class="fw-bold">Secure</h3>
+      <p style="color:var(--muted)">Encrypted Auth</p>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card-glass stat-card stat-blue">
+      <div class="ribbon-blue"></div>
+      <h3 class="fw-bold">Full Logs</h3>
+      <p style="color:var(--muted)">Complete Tracking</p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+<section class="row g-4 mb-5">
+
+  <div class="col-md-4">
+    <div class="card-glass stat-card stat-blue">
+      <div class="ribbon-blue"></div>
+
+      <div style="
+        width:60px;
+        height:60px;
+        margin:0 auto 20px;
+        border-radius:16px;
+        background:rgba(46,168,255,.15);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        <i class="bi bi-shield-lock fs-3 text-info"></i>
+      </div>
+
+      <h5 class="fw-bold">Secure Authentication</h5>
+      <p style="color:var(--muted)">
+        Gmail App Password based encrypted authentication.
+      </p>
+    </div>
+  </div>
+
+
+  <div class="col-md-4">
+    <div class="card-glass stat-card stat-cyan">
+      <div class="ribbon-cyan"></div>
+
+      <div style="
+        width:60px;
+        height:60px;
+        margin:0 auto 20px;
+        border-radius:16px;
+        background:rgba(0,242,255,.15);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        <i class="bi bi-lightning-charge fs-3 text-warning"></i>
+      </div>
+
+      <h5 class="fw-bold">High Speed Delivery</h5>
+      <p style="color:var(--muted)">
+        Optimized SMTP sending with minimal latency.
+      </p>
+    </div>
+  </div>
+
+
+  <div class="col-md-4">
+    <div class="card-glass stat-card stat-purple">
+      <div class="ribbon-purple"></div>
+
+      <div style="
+        width:60px;
+        height:60px;
+        margin:0 auto 20px;
+        border-radius:16px;
+        background:rgba(123,92,255,.15);
+        display:flex;
+        align-items:center;
+        justify-content:center;
+      ">
+        <i class="bi bi-bar-chart fs-3 text-light"></i>
+      </div>
+
+      <h5 class="fw-bold">Complete Tracking</h5>
+      <p style="color:var(--muted)">
+        Monitor subject, recipient and timestamps.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= ABOUT SPLIT ================= -->
+<section class="row align-items-center mb-5">
+
+  <div class="col-md-6">
+    <div class="card-glass stat-card stat-blue">
+      <h3 class="fw-bold mb-3">About The Platform</h3>
+      <p style="color:var(--muted); line-height:1.9;">
+        Email Sender is designed for professionals and businesses
+        who want a modern, reliable and visually premium email control system.
+        Built with Django and Gmail SMTP integration,
+        it delivers both performance and aesthetics.
+      </p>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card-glass stat-card stat-purple">
+      <i class="bi bi-envelope-paper fs-1 text-info"></i>
+      <h3 class="mt-3 fw-bold">Built For Productivity</h3>
+      <p style="color:var(--muted)">
+        Designed for speed, clarity and powerful control.
+      </p>
+    </div>
+  </div>
+
+</section>
+
+
+<!-- ================= CONTACT ================= -->
+<section class="card-glass stat-card stat-cyan">
+
+  <div class="ribbon-purple"></div>
+
+  <h4 class="fw-bold mb-4">Contact Information</h4>
+
+  <p style="color:var(--muted); font-size:16px;">
+    <i class="bi bi-envelope me-2 text-info"></i> support@emailsender.com <br><br>
+    <i class="bi bi-geo-alt me-2 text-danger"></i> Ahmedabad, Gujarat, India
+  </p>
+
+</section>
+
+{% endblock %}

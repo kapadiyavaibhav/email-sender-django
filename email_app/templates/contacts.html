@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- PAGE TITLE -->
+<div class="mb-5">
+  <h2 class="fw-bold">Contact Manager</h2>
+  <p style="color:var(--muted)">
+    Manage your saved recipients and quickly send emails.
+  </p>
+</div>
+
+
+<div class="card-glass position-relative overflow-hidden">
+
+  <!-- TOP GRADIENT ACCENT -->
+  <div style="
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple));
+  "></div>
+
+  <!-- ADD CONTACT FORM -->
+  <form method="POST" class="row g-3 mb-4 mt-3">
+    {% csrf_token %}
+
+    <div class="col-md-5">
+      <input type="text"
+             name="name"
+             class="form-control neon-input"
+             placeholder="Contact Name"
+             required>
+    </div>
+
+    <div class="col-md-5">
+      <input type="email"
+             name="email"
+             class="form-control neon-input"
+             placeholder="Contact Email"
+             required>
+    </div>
+
+    <div class="col-md-2">
+      <button type="submit" class="btn btn-neon w-100">
+        <i class="bi bi-person-plus-fill me-1"></i> Add
+      </button>
+    </div>
+  </form>
+
+
+  <!-- CONTACT LIST -->
+  {% if contacts %}
+  <div class="table-responsive">
+
+    <table class="table neon-table align-middle">
+
+      <thead>
+        <tr>
+            <th><i class="bi bi-person-fill me-2 text-blue"></i> Name</th>
+            <th><i class="bi bi-envelope-fill me-2 text-cyan"></i> Email</th>
+            <th class="text-center">
+            <i class="bi bi-gear-fill me-2 text-purple"></i> Actions
+            </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for contact in contacts %}
+        <tr>
+          <td>{{ contact.name }}</td>
+          <td>{{ contact.email }}</td>
+          <td class="text-center">
+
+            <a href="{% url 'compose' %}?to={{ contact.email }}"
+               class="btn btn-sm btn-outline-light me-2">
+               <i class="bi bi-send-fill text-info"></i>
+            </a>
+
+            <a href="{% url 'delete_contact' contact.id %}"
+               class="btn btn-sm btn-outline-light text-danger">
+               <i class="bi bi-trash-fill"></i>
+            </a>
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="bi bi-people fs-1 text-muted"></i>
+      <p class="mt-3" style="color:var(--muted)">
+        No contacts added yet.
+      </p>
+    </div>
+  {% endif %}
+
+</div>
+
+{% endblock %}

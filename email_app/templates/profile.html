@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- PAGE TITLE -->
+<div class="mb-5">
+  <h2 class="fw-bold">Profile Settings</h2>
+  <p style="color:var(--muted)">
+    Manage your account information and security settings.
+  </p>
+</div>
+
+<div class="card-glass position-relative overflow-hidden">
+
+  <!-- TOP ACCENT LINE -->
+  <div style="
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple));
+  "></div>
+
+  {% if success %}
+  <div class="alert alert-success mt-4">
+    {{ success }}
+  </div>
+  {% endif %}
+
+  <!-- ================= ACCOUNT INFO ================= -->
+  <div class="mt-4 mb-5">
+    <h5 class="fw-bold mb-3">
+      <i class="bi bi-person-fill me-2 text-info"></i>
+      Account Information
+    </h5>
+
+    <div class="small-text mb-2">
+      <strong>Username:</strong> {{ request.user.username }}
+    </div>
+
+    <div class="small-text">
+      <strong>Gmail:</strong> {{ request.user.email }}
+    </div>
+  </div>
+
+  <!-- ================= UPDATE APP PASSWORD ================= -->
+  <div class="mb-5">
+    <h5 class="fw-bold mb-3">
+      <i class="bi bi-key-fill me-2 text-warning"></i>
+      Update Gmail App Password
+    </h5>
+
+    <form method="POST">
+      {% csrf_token %}
+      <div class="mb-3">
+        <input type="password"
+               name="app_password"
+               class="form-control neon-input"
+               placeholder="Enter new 16-character App Password"
+               required>
+      </div>
+
+      <button type="submit"
+              name="update_app_password"
+              class="btn btn-neon">
+        Update App Password
+      </button>
+    </form>
+  </div>
+
+  <!-- ================= CHANGE LOGIN PASSWORD ================= -->
+  <div>
+    <h5 class="fw-bold mb-3">
+      <i class="bi bi-shield-lock-fill me-2 text-danger"></i>
+      Change Login Password
+    </h5>
+
+    <form method="POST">
+      {% csrf_token %}
+
+      <div class="mb-3">
+        {{ password_form.old_password.label_tag }}
+        {{ password_form.old_password }}
+      </div>
+
+      <div class="mb-3">
+        {{ password_form.new_password1.label_tag }}
+        {{ password_form.new_password1 }}
+      </div>
+
+      <div class="mb-3">
+        {{ password_form.new_password2.label_tag }}
+        {{ password_form.new_password2 }}
+      </div>
+
+      <button type="submit"
+              name="change_password"
+              class="btn btn-outline-light">
+        Change Password
+      </button>
+
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

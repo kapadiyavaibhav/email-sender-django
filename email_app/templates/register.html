@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- PAGE TITLE -->
+<div class="text-center mb-4">
+  <h2 class="fw-bold">Create Account</h2>
+  <p style="color:var(--muted)">
+    Register your account to start sending secure emails.
+  </p>
+</div>
+
+<!-- CENTER WRAPPER -->
+<div class="d-flex justify-content-center">
+  
+  <div class="card-glass position-relative overflow-hidden p-4"
+       style="max-width:600px; width:100%;">
+
+    <!-- TOP ACCENT LINE -->
+    <div style="
+      position:absolute;
+      top:0;
+      left:0;
+      width:100%;
+      height:4px;
+      background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple));
+    "></div>
+
+    <form method="POST" class="mt-4" novalidate>
+      {% csrf_token %}
+
+      <!-- FULL NAME -->
+      <div class="mb-4">
+        <label class="form-label text-light">
+          <i class="bi bi-person-fill me-2 text-info"></i>
+          Full Name
+        </label>
+        <input type="text"
+               name="username"
+               class="form-control neon-input"
+               placeholder="Enter your name"
+               value="{{ form.username.value|default:'' }}"
+               required>
+        <div class="small-text mt-1">
+          This will be your display name.
+        </div>
+      </div>
+
+      <!-- GMAIL -->
+      <div class="mb-4">
+        <label class="form-label text-light">
+          <i class="bi bi-envelope-fill me-2 text-danger"></i>
+          Gmail Address
+        </label>
+        <input type="email"
+               name="email"
+               class="form-control neon-input"
+               placeholder="example@gmail.com"
+               value="{{ form.email.value|default:'' }}"
+               required>
+        <div class="small-text mt-1">
+          This Gmail will be used to send emails.
+        </div>
+      </div>
+
+      <!-- PASSWORD -->
+      <div class="mb-4">
+        <label class="form-label text-light">
+          <i class="bi bi-lock-fill me-2 text-warning"></i>
+          Login Password
+        </label>
+        <input type="password"
+               name="password1"
+               class="form-control neon-input"
+               placeholder="Create login password"
+               required>
+      </div>
+
+      <!-- CONFIRM PASSWORD -->
+      <div class="mb-4">
+        <label class="form-label text-light">
+          <i class="bi bi-shield-lock-fill me-2 text-info"></i>
+          Confirm Password
+        </label>
+        <input type="password"
+               name="password2"
+               class="form-control neon-input"
+               placeholder="Re-enter password"
+               required>
+      </div>
+
+      <!-- APP PASSWORD -->
+      <div class="mb-4">
+        <label class="form-label text-light">
+          <i class="bi bi-key-fill me-2 text-warning"></i>
+          Gmail App Password
+        </label>
+        <input type="password"
+               name="app_password"
+               class="form-control neon-input"
+               placeholder="16-character app password"
+               required>
+        <div class="small-text mt-1">
+          Required for Gmail SMTP authentication.
+        </div>
+      </div>
+
+      {% if form.errors %}
+      <div class="alert alert-danger">
+        {{ form.errors }}
+      </div>
+      {% endif %}
+
+      <button type="submit" class="btn btn-neon w-100 py-3">
+        <i class="bi bi-person-plus-fill me-2"></i>
+        Register
+      </button>
+
+    </form>
+
+    <div class="text-center mt-4">
+      <span style="color:var(--muted);">
+        Already have an account?
+      </span>
+      <a href="{% url 'login' %}" class="ms-2 text-info text-decoration-none">
+        Login
+      </a>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

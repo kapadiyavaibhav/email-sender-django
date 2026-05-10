@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- PAGE TITLE -->
+<div class="mb-5">
+  <h2 class="fw-bold">Compose Email</h2>
+  <p style="color:var(--muted)">
+    Send a secure email using your Gmail SMTP integration.
+  </p>
+</div>
+
+
+<div class="card-glass position-relative overflow-hidden">
+
+  <!-- TOP GRADIENT RIBBON -->
+  <div style="
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple));
+  "></div>
+
+  {% if success %}
+    <div class="alert alert-success mt-3">{{ success }}</div>
+  {% endif %}
+
+  {% if error %}
+    <div class="alert alert-danger mt-3">{{ error }}</div>
+  {% endif %}
+
+  <form method="POST" class="mt-4">
+    {% csrf_token %}
+
+    <!-- CONTACT SELECT -->
+    <div class="mb-4">
+      <label class="form-label neon-label">
+        <i class="bi bi-people me-2 text-info"></i>
+        Select Saved Contact
+      </label>
+
+      <select class="form-select neon-input mb-3" onchange="fillEmail(this)">
+        <option value="">-- Select Contact --</option>
+        {% for contact in contacts %}
+        <option value="{{ contact.email }}">
+          {{ contact.name }} ({{ contact.email }})
+        </option>
+        {% endfor %}
+      </select>
+
+      <label class="form-label neon-label">
+        <i class="bi bi-envelope-at me-2 text-danger"></i>
+        Or Enter Email
+      </label>
+
+      <input type="email"
+             name="recipient"
+             id="recipientInput"
+             class="form-control neon-input"
+             value="{{ prefill_email|default:'' }}"
+             placeholder="example@gmail.com"
+             required>
+    </div>
+
+    <!-- SUBJECT -->
+    <div class="mb-4">
+      <label class="form-label neon-label">
+        <i class="bi bi-type me-2 text-warning"></i>
+        Subject
+      </label>
+      <input type="text"
+             name="subject"
+             class="form-control neon-input"
+             placeholder="Enter subject..."
+             required>
+    </div>
+
+    <!-- MESSAGE -->
+    <div class="mb-4">
+      <label class="form-label neon-label">
+        <i class="bi bi-chat-left-text me-2 text-info"></i>
+        Message
+      </label>
+      <textarea name="message"
+                rows="6"
+                class="form-control neon-input"
+                placeholder="Write your message here..."
+                required></textarea>
+    </div>
+
+    <!-- SEND BUTTON -->
+    <button type="submit" class="btn btn-neon w-100 py-3" id="sendBtn">
+      <i class="bi bi-send-fill me-2"></i>
+      Send Email
+    </button>
+
+  </form>
+
+</div>
+
+
+<script>
+function fillEmail(select) {
+    document.getElementById("recipientInput").value = select.value;
+}
+document.querySelector("form").addEventListener("submit", function() {
+    const btn = document.getElementById("sendBtn");
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Sending...';
+    btn.disabled = true;
+});
+</script>
+
+{% endblock %}

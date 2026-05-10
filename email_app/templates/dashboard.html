@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- PAGE TITLE -->
+<div class="mb-5">
+  <h2 class="fw-bold">Dashboard Overview</h2>
+  <p style="color:var(--muted)">
+    Monitor activity, manage contacts and control your email system.
+  </p>
+</div>
+
+
+<!-- STATS ROW -->
+<div class="row g-4 mb-5">
+
+  <!-- TOTAL EMAILS -->
+  <div class="col-md-4">
+    <div class="card-glass stat-card stat-blue">
+      <div class="stat-icon icon-blue">
+        <i class="bi bi-envelope-fill"></i>
+      </div>
+      <h3>{{ total_emails }}</h3>
+      <p>Total Emails Sent</p>
+    </div>
+  </div>
+
+  <!-- TOTAL CONTACTS -->
+  <div class="col-md-4">
+    <div class="card-glass stat-card stat-cyan">
+      <div class="stat-icon icon-cyan">
+        <i class="bi bi-people-fill"></i>
+      </div>
+      <h3>{{ total_contacts }}</h3>
+      <p>Total Contacts</p>
+    </div>
+  </div>
+
+  <!-- LAST EMAIL -->
+  <div class="col-md-4">
+    <div class="card-glass stat-card stat-purple">
+      <div class="stat-icon icon-purple">
+        <i class="bi bi-clock-history"></i>
+      </div>
+      <h3>Last Email Sent</h3>
+
+      {% if last_email %}
+        <p class="small-text">{{ last_email.recipient }}</p>
+      {% else %}
+        <p class="small-text">No emails yet</p>
+      {% endif %}
+
+    </div>
+  </div>
+
+</div>
+
+
+<!-- QUICK ACTIONS -->
+<div class="card-glass mb-5">
+  <h5 class="fw-bold mb-4">Quick Actions</h5>
+
+  <div class="d-flex flex-wrap gap-3 align-itens-center">
+
+    <a href="{% url 'compose' %}" class="btn btn-outline-light">
+      <i class="bi bi-pencil-square me-2 text-info"></i> Compose Email
+    </a>
+
+    <a href="{% url 'contacts' %}" class="btn btn-outline-light">
+      <i class="bi bi-person-plus me-2 text-success"></i> Add Contact
+    </a>
+
+    <a href="{% url 'history' %}" class="btn btn-outline-light">
+      <i class="bi bi-bar-chart me-2 text-warning"></i> View History
+    </a>
+
+  </div>
+</div>
+
+
+<!-- ACCOUNT INFO -->
+<div class="card-glass">
+  <h5 class="fw-bold mb-3">Account Information</h5>
+
+  <p style="color:var(--muted)">
+    <i class="bi bi-person-circle me-2 text-info"></i>
+    Username: <strong>{{ request.user.username }}</strong>
+  </p>
+
+  <p style="color:var(--muted)">
+    <i class="bi bi-envelope-at me-2 text-danger"></i>
+    Gmail: <strong>{{ request.user.email }}</strong>
+  </p>
+</div>
+
+{% endblock %}

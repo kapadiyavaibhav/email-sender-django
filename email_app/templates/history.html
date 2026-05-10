@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- PAGE TITLE -->
+<div class="mb-5">
+  <h2 class="fw-bold">Email History</h2>
+  <p style="color:var(--muted)">
+    Track all emails sent through your automation system.
+  </p>
+</div>
+
+<div class="card-glass position-relative overflow-hidden">
+
+  <!-- TOP ACCENT LINE -->
+  <div style="
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:4px;
+    background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple));
+  "></div>
+
+  {% if emails %}
+  <div class="table-responsive mt-4">
+
+    <table class="table align-middle neon-table">
+
+      <thead>
+        <tr>
+          <th><i class="bi bi-person-fill me-2"></i> Recipient</th>
+          <th><i class="bi bi-type me-2"></i> Subject</th>
+          <th><i class="bi bi-clock-fill me-2"></i> Sent At</th>
+          <th class="text-center">
+            <i class="bi bi-eye-fill me-2"></i> View
+          </th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for email in emails %}
+        <tr>
+
+          <!-- RECIPIENT -->
+          <td>
+            {% if email.contact_name %}
+              <div class="fw-semibold">{{ email.contact_name }}</div>
+              <div class="small-text">{{ email.recipient }}</div>
+            {% else %}
+              {{ email.recipient }}
+            {% endif %}
+          </td>
+
+          <!-- SUBJECT -->
+          <td>{{ email.subject }}</td>
+
+          <!-- DATE -->
+          <td>
+            <span class="date-badge">
+              {{ email.sent_at|date:"d M Y, h:i A" }}
+            </span>
+          </td>
+
+          <!-- VIEW BUTTON -->
+          <td class="text-center">
+            <button class="btn btn-sm btn-outline-light"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modal{{ email.id }}">
+              <i class="bi bi-eye-fill text-info"></i>
+            </button>
+          </td>
+
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+  </div>
+{% endif %}
+
+</div>
+{% if emails %}
+  <!-- MODALS OUTSIDE TABLE -->
+  {% for email in emails %}
+  <div class="modal fade" id="modal{{ email.id }}" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content neon-modal">
+
+        <div class="modal-header">
+          <h5 class="modal-title">{{ email.subject }}</h5>
+          <button type="button"
+                  class="btn-close btn-close-white"
+                  data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <p><strong>To:</strong> {{ email.recipient }}</p>
+          <hr style="border-color:rgba(255,255,255,.1)">
+          <p style="color:var(--muted); white-space:pre-line;">
+            {{ email.message }}
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+  {% else %}
+  <div class="text-center py-5">
+    <i class="bi bi-clock-history fs-1 text-muted"></i>
+    <p class="mt-3" style="color:var(--muted)">
+      No emails sent yet.
+    </p>
+  </div>
+  {% endif %}
+
+{% endblock %}

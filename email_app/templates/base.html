@@ -1,0 +1,638 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Email Sender</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#050a16;
+  --card:#0f1c2e;
+  --border:rgba(255,255,255,.06);
+
+  --blue:#2ea8ff;
+  --cyan:#00f2ff;
+  --purple:#7b5cff;
+
+  --text:#eaf4ff;
+  --muted:#8aa6d9;
+}
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(46,168,255,.18), transparent 40%),
+    radial-gradient(circle at 85% 80%, rgba(123,92,255,.15), transparent 40%),
+    linear-gradient(180deg,#050a16,#030712);
+  color:var(--text);
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  width:200%;
+  height:200%;
+  top:-50%;
+  left:-50%;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(46,168,255,.15), transparent 50%),
+    radial-gradient(circle at 70% 70%, rgba(123,92,255,.15), transparent 50%);
+  animation:rotateGlow 30s linear infinite;
+  z-index:-2;
+}
+
+@keyframes rotateGlow{
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
+}
+/* ===== LAYOUT ===== */
+.layout{
+  display:flex;
+  min-height:100vh;
+}
+
+/* ===== TOPBAR ===== */
+
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 25px;
+  margin-bottom:50px;
+  background:rgba(15,28,46,.6);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.05);
+  border-radius:16px;
+}
+
+.topbar-left{
+  display:flex;
+  flex-direction:column;
+}
+
+.topbar-sub{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:3px;
+}
+
+/* USER BOX */
+
+.user-box{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px 16px;
+  background:rgba(46,168,255,.12);
+  border-radius:30px;
+  text-decoration:none;
+  color:#fff;
+  font-size:14px;
+  transition:.3s;
+  border:1px solid rgba(46,168,255,.25);
+}
+
+.user-box i:first-child{
+  font-size:18px;
+}
+
+.small-arrow{
+  font-size:11px;
+  opacity:.7;
+  transition:.3s;
+}
+
+.user-box:hover{
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  color:#000;
+  transform:translateY(-2px);
+  box-shadow:0 0 20px rgba(46,168,255,.4);
+}
+
+.user-box:hover .small-arrow{
+  transform:translateY(2px);
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+  width:250px;
+  background:linear-gradient(180deg,#081427,#060f1d);
+  border-right:1px solid rgba(255,255,255,.05);
+  padding:35px 20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  position:relative;
+}
+
+.sidebar::before{
+  content:"";
+  position:absolute;
+  top:0;
+  right:0;
+  width:4px;
+  height:100%;
+  background:linear-gradient(var(--blue),var(--cyan),var(--purple));
+}
+
+.logo{
+  font-weight:900;
+  font-size:22px;
+  margin-bottom:50px;
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#fff;
+}
+
+.logo i{
+  font-size:22px;
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.nav-link{
+  padding:12px 18px;
+  border-radius:14px;
+  font-size:14px;
+  margin-bottom:10px;
+  color:var(--muted);
+  transition:.3s;
+  position:relative;
+}
+
+.nav-link:hover{
+  background:linear-gradient(90deg,rgba(46,168,255,.15),rgba(123,92,255,.15));
+  color:#fff;
+  box-shadow:0 0 15px rgba(46,168,255,.3);
+}
+
+.nav-link.active{
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  color:#000;
+  font-weight:600;
+  position:relative;
+}
+
+.nav-link.active::after{
+  content:"";
+  position:absolute;
+  bottom:-4px;
+  left:15%;
+  width:70%;
+  height:3px;
+  background:linear-gradient(90deg,var(--cyan),var(--purple));
+  border-radius:4px;
+}
+
+.nav-link i{
+  transition:.3s;
+}
+
+.nav-link:hover i{
+  transform:translateX(3px);
+  color:var(--cyan);
+}
+
+/* LOGOUT */
+.logout{
+  background:rgba(255,0,0,.12);
+  border:1px solid rgba(255,0,0,.3);
+  padding:12px;
+  text-align:center;
+  border-radius:12px;
+  color:#ff6b6b;
+  text-decoration:none;
+  transition:.3s;
+}
+
+.logout:hover{
+  background:#ff4d4d;
+  color:#fff;
+  box-shadow:0 0 25px rgba(255,0,0,.5);
+  transform:translateY(-3px);
+}
+
+/* ===== MAIN CONTENT ===== */
+.main{
+  flex:1;
+  padding:50px 70px;
+}
+
+/* TOP BAR */
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:50px;
+}
+
+.user-badge{
+  padding:8px 16px;
+  background:rgba(46,168,255,.15);
+  border-radius:20px;
+  font-size:13px;
+  color:#fff;
+  display:flex;
+  align-items:center;
+}
+
+/* CARD */
+.card-glass{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:40px;
+  transition:.4s;
+}
+
+.card-glass:hover{
+  transform:translateY(-10px);
+  box-shadow:
+    0 0 60px rgba(46,168,255,.25),
+    0 0 100px rgba(123,92,255,.2);
+}
+
+/* BUTTON */
+.btn-neon{
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  border:none;
+  padding:14px 34px;
+  border-radius:50px;
+  font-weight:600;
+  transition:.3s;
+  color:#fff;
+}
+
+.btn-neon:hover{
+  box-shadow:0 0 35px rgba(46,168,255,.6);
+  transform:translateY(-4px);
+}
+
+footer{
+  margin-top:80px;
+  font-size:13px;
+  color:var(--muted);
+  text-align:center;
+}
+
+.main{
+  flex:1;
+  padding:60px 80px;
+  position:relative;
+}
+
+/* moving background glow */
+.main::before{
+  content:"";
+  position:absolute;
+  width:600px;
+  height:600px;
+  background:radial-gradient(circle, rgba(46,168,255,.15), transparent 60%);
+  top:20%;
+  left:30%;
+  filter:blur(100px);
+  z-index:-1;
+}
+
+.main::after{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle, rgba(123,92,255,.18), transparent 60%);
+  bottom:10%;
+  right:20%;
+  filter:blur(100px);
+  z-index:-1;
+}
+
+.ribbon-blue,
+.ribbon-purple,
+.ribbon-cyan{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:4px;
+  border-radius:22px 22px 0 0;
+}
+/* STAT CARD STYLING */
+
+.stat-card{
+  text-align:center;
+  position:relative;
+  padding:40px 20px;
+}
+
+.stat-card h3{
+  font-size:36px;
+  font-weight:800;
+  margin-top:15px;
+}
+
+.stat-card p{
+  color:var(--muted);
+  margin:0;
+}
+
+.stat-icon{
+  width:55px;
+  height:55px;
+  margin:0 auto;
+  border-radius:15px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
+  background:rgba(255,255,255,.05);
+}
+/* ===== ICON COLORS ===== */
+
+.icon-blue{
+  background:rgba(46,168,255,.15);
+  color:var(--blue);
+}
+
+.icon-cyan{
+  background:rgba(0,242,255,.15);
+  color:var(--cyan);
+}
+
+.icon-purple{
+  background:rgba(123,92,255,.15);
+  color:var(--purple);
+}
+/* Color Variants */
+
+.stat-blue{
+  border-top:3px solid var(--blue);
+}
+
+.stat-cyan{
+  border-top:3px solid var(--cyan);
+}
+
+.stat-purple{
+  border-top:3px solid var(--purple);
+}
+
+.small-text{
+  color:var(--muted);
+  font-size:14px;
+}
+.btn-outline-light{
+  border:1px solid rgba(255,255,255,.25);
+  transition:.3s;
+}
+
+.btn-outline-light:hover{
+  background:linear-gradient(90deg,var(--blue),var(--purple));
+  color:#000 !important;
+  border-color:transparent;
+  box-shadow:0 0 20px rgba(46,168,255,.4);
+}
+
+/* ===== NEON INPUT FIELDS ===== */
+
+.neon-input{
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.1);
+  color:#fff;
+  border-radius:12px;
+  padding:12px 15px;
+  transition:all.3s ease;
+}
+
+.neon-input:focus{
+  background:rgba(255,255,255,.06);
+  border-color:var(--cyan);
+  box-shadow:0 0 15px rgba(0,242,255,.4);
+  color:#fff;
+  transform: scale(1.01);
+}
+
+.form-select{
+  background-color:rgba(255,255,255,.04);
+  color:#fff;
+}
+
+/* ===== FIX INPUT TEXT VISIBILITY ===== */
+
+.neon-input,
+.neon-input:focus,
+.form-control,
+.form-control:focus,
+.form-select,
+.form-select:focus,
+textarea {
+  color: #ffffff !important;
+  background-color: rgba(255,255,255,.05) !important;
+}
+
+/* Placeholder color */
+.neon-label {
+  color: #ffffff;
+  font-weight: 500;
+  letter-spacing: .3px;
+}
+
+.neon-label i {
+  opacity: .9;
+}
+
+.neon-input::placeholder,
+textarea::placeholder {
+  color: rgba(255,255,255,.5) !important;
+}
+
+/* Fix select dropdown text */
+.form-select option {
+  background-color: #0f1c2e;
+  color: #ffffff;
+}
+
+/* ===== NEON TABLE ===== */
+
+/* ===== NEON TABLE FULL DARK THEME ===== */
+
+.neon-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 12px;
+  background: transparent !important;
+  color: #fff;
+}
+
+/* REMOVE Bootstrap white background */
+.neon-table th,
+.neon-table td {
+  background: rgba(255,255,255,.05) !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+
+/* Header */
+.neon-table thead th {
+  background: transparent !important;
+  color: var(--cyan) !important;
+  font-weight: 600;
+  padding: 15px;
+}
+
+/* Rows */
+.neon-table tbody tr {
+  transition: .3s;
+}
+
+.neon-table tbody tr:hover td {
+  background: rgba(46,168,255,.10) !important;
+  transform: scale(1.01);
+}
+
+/* Rounded effect */
+.neon-table tbody tr td:first-child {
+  border-radius: 12px 0 0 12px;
+}
+
+.neon-table tbody tr td:last-child {
+  border-radius: 0 12px 12px 0;
+}
+
+/* ===== DATE BADGE ===== */
+
+.date-badge {
+  background: rgba(123,92,255,.15);
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--purple);
+}
+
+/* ===== MODAL STYLING ===== */
+
+.neon-modal {
+  background: var(--card);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 18px;
+  color: #fff;
+}
+
+.neon-modal .modal-header {
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+/* ===== FORM INPUT STYLING ===== */
+
+.neon-input {
+  background: rgba(255,255,255,.05) !important;
+  border: 1px solid rgba(255,255,255,.1) !important;
+  color: #fff !important;
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.neon-input:focus {
+  border-color: var(--blue) !important;
+  box-shadow: 0 0 15px rgba(46,168,255,.4);
+  background: rgba(255,255,255,.08) !important;
+  color: #fff !important;
+}
+
+/* Style Django password inputs automatically */
+input[type="password"] {
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.1);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+  <div>
+    <a href="{% url 'home' %}" class="logo text-decoration-none">
+      <i class="bi bi-envelope-paper-heart-fill"></i>
+      <span>Email Sender</span>
+    </a>
+
+    {% if user.is_authenticated %}
+      <a href="{% url 'dashboard' %}" class="nav-link {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
+        <i class="bi bi-speedometer2"></i> Dashboard
+      </a>
+
+      <a href="{% url 'compose' %}" class="nav-link {% if request.resolver_match.url_name == 'compose' %}active{% endif %}">
+        <i class="bi bi-pencil-square"></i> Compose
+      </a>
+
+      <a href="{% url 'contacts' %}" class="nav-link {% if request.resolver_match.url_name == 'contacts' %}active{% endif %}">
+        <i class="bi bi-people"></i> Contacts
+      </a>
+
+      <a href="{% url 'history' %}" class="nav-link {% if request.resolver_match.url_name == 'history' %}active{% endif %}">
+        <i class="bi bi-clock-history"></i> History
+      </a>
+
+      <a href="{% url 'profile' %}" class="nav-link {% if request.resolver_match.url_name == 'profile' %}active{% endif %}">
+        <i class="bi bi-person"></i> Profile
+      </a>
+    {% endif %}
+  </div>
+
+  {% if user.is_authenticated %}
+  <div>
+    <a href="{% url 'logout' %}" class="logout">
+      <i class="bi bi-box-arrow-right me-1"></i> Logout
+    </a>
+  </div>
+  {% endif %}
+
+</aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    {% if user.is_authenticated %}
+    <div class="topbar">
+
+  <div class="topbar-left">
+    <h5 class="fw-bold m-0">Control Panel</h5>
+    <span class="topbar-sub">Welcome back 👋</span>
+  </div>
+
+  {% if user.is_authenticated %}
+  <a href="{% url 'profile' %}" class="user-box">
+    <i class="bi bi-person-circle"></i>
+    <span>{{ request.user.username }}</span>
+    <i class="bi bi-chevron-down small-arrow"></i>
+  </a>
+  {% endif %}
+
+</div>
+  {% endif %}
+    {% block content %}{% endblock %}
+
+    <footer class="mt-5">
+      © 2026 Email Sender | Designed & Developed by Vaibhav Kapadiya
+    </footer>
+
+  </main>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
